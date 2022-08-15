@@ -24,7 +24,7 @@ for user in "${USERS_TO_BACKUP[@]}"; do
 		mkdir -p "$userDirectory";
 	fi
 
-	curl -s "https://api.github.com/users/$user/repos" | jq -r '.[].clone_url' | while read repo; do
+	curl -s -u "$USER_PAT" "https://api.github.com/users/$user/repos" | jq -r '.[].clone_url' | while read repo; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$userDirectory/$repoDirectory"
 

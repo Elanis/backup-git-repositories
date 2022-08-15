@@ -7,3 +7,4 @@ USERS_TO_BACKUP=(
 	Elanis
 	L-U-M-E-N
 )
+USER_PAT="USERNAME:PAT" # Get personal access token with read:user and repo
