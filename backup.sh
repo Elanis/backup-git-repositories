@@ -18,13 +18,13 @@ if ! command -v jq &> /dev/null; then
 	fi
 fi
 
-for user in "Elanis"; do
+for user in "${USERS_TO_BACKUP[@]}"; do
 	userDirectory="$BACKUP_DESTINATION/$user"
 	if [[ ! -d "$userDirectory/" ]]; then
 		mkdir -p "$userDirectory";
 	fi
 
-	curl -s 'https://api.github.com/users/Elanis/repos' | jq -r '.[].clone_url' | while read repo; do
+	curl -s "https://api.github.com/users/$user/repos" | jq -r '.[].clone_url' | while read repo; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$userDirectory/$repoDirectory"
 
