@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo -e "Loading Config file ..."
+
+BACKUP_DESTINATION="../"
+USERS_TO_BACKUP=(
+	Elanis
+	L-U-M-E-N
+)
