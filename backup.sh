@@ -4,8 +4,10 @@ set -euo pipefail
 # ==================================
 # Load Configuration
 # ==================================
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . "$DIR/backup.cfg"
+
+cd "$DIR"
 
 # Download jq if not existing, not using apt as it's going to run on my TrueNAS scale server
 if ! command -v jq &> /dev/null; then
