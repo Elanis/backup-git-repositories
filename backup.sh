@@ -24,7 +24,7 @@ for user in "${USERS_TO_BACKUP[@]}"; do
 		mkdir -p "$userDirectory";
 	fi
 
-	curl -s -u "$USER_PAT" "https://api.github.com/users/$user/repos" | jq -r '.[].clone_url' | while read repo; do
+	curl -s -u "$USER_PAT" "https://api.github.com/users/$user/repos" | jq -r '.[].ssh_url' | while read repo; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$userDirectory/$repoDirectory"
 
@@ -39,6 +39,38 @@ for user in "${USERS_TO_BACKUP[@]}"; do
 			echo "Cloning $repoDirectory ..."
 
 			cd "$userDirectory"
+			git clone --mirror "$repo" "$repoDirectory"
+
+			echo "Done !"
+		fi
+
+		cd "$DIR"
+	done
+done
+
+cd "$DIR"
+
+for org in "${ORGS_TO_BACKUP[@]}"; do
+	orgDirectory="$BACKUP_DESTINATION/$org"
+	if [[ ! -d "$orgDirectory/" ]]; then
+		mkdir -p "$orgDirectory";
+	fi
+
+	curl -s -u "$USER_PAT" "https://api.github.com/orgs/$org/repos?type=all" | jq -r '.[].ssh_url' | while read repo; do
+		repoDirectory=$(basename "$repo")
+		relativeDirectory="$orgDirectory/$repoDirectory"
+
+		if [[ -d "$relativeDirectory" ]]; then
+			echo "Updating $repoDirectory ..."
+
+			cd "$relativeDirectory"
+			git remote update
+
+			echo "Done !"
+		else
+			echo "Cloning $repoDirectory ..."
+
+			cd "$orgDirectory"
 			git clone --mirror "$repo" "$repoDirectory"
 
 			echo "Done !"
