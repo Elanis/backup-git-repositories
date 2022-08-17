@@ -28,27 +28,25 @@ for user in "${USERS_TO_BACKUP[@]}"; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$userDirectory/$repoDirectory"
 
-		if [[ -d "$relativeDirectory" ]]; then
-			echo "Updating $repoDirectory ..."
+		(
+			if [[ -d "$relativeDirectory" ]]; then
+				echo "Updating $repoDirectory ..."
 
-			cd "$relativeDirectory"
-			git remote update
+				cd "$relativeDirectory"
+				git remote update
 
-			echo "Done !"
-		else
-			echo "Cloning $repoDirectory ..."
+				echo "Done !"
+			else
+				echo "Cloning $repoDirectory ..."
 
-			cd "$userDirectory"
-			git clone --mirror "$repo" "$repoDirectory"
+				cd "$userDirectory"
+				git clone --mirror "$repo" "$repoDirectory"
 
-			echo "Done !"
-		fi
-
-		cd "$DIR"
+				echo "Done !"
+			fi
+		)
 	done
 done
-
-cd "$DIR"
 
 for org in "${ORGS_TO_BACKUP[@]}"; do
 	orgDirectory="$BACKUP_DESTINATION/$org"
@@ -60,22 +58,22 @@ for org in "${ORGS_TO_BACKUP[@]}"; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$orgDirectory/$repoDirectory"
 
-		if [[ -d "$relativeDirectory" ]]; then
-			echo "Updating $repoDirectory ..."
+		(
+			if [[ -d "$relativeDirectory" ]]; then
+				echo "Updating $repoDirectory ..."
 
-			cd "$relativeDirectory"
-			git remote update
+				cd "$relativeDirectory"
+				git remote update
 
-			echo "Done !"
-		else
-			echo "Cloning $repoDirectory ..."
+				echo "Done !"
+			else
+				echo "Cloning $repoDirectory ..."
 
-			cd "$orgDirectory"
-			git clone --mirror "$repo" "$repoDirectory"
+				cd "$orgDirectory"
+				git clone --mirror "$repo" "$repoDirectory"
 
-			echo "Done !"
-		fi
-
-		cd "$DIR"
+				echo "Done !"
+			fi
+		)
 	done
 done
