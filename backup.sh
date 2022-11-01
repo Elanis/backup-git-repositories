@@ -24,7 +24,8 @@ for user in "${USERS_TO_BACKUP[@]}"; do
 		mkdir -p "$userDirectory";
 	fi
 
-	curl -s -u "$USER_PAT" "https://api.github.com/users/$user/repos" | jq -r '.[].ssh_url' | while read repo; do
+	# TODO: work with multiple pages if needed
+	curl -s -u "$USER_PAT" "https://api.github.com/users/$user/repos?per_page=100" | jq -r '.[].ssh_url' | while read repo; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$userDirectory/$repoDirectory"
 
@@ -54,7 +55,8 @@ for org in "${ORGS_TO_BACKUP[@]}"; do
 		mkdir -p "$orgDirectory";
 	fi
 
-	curl -s -u "$USER_PAT" "https://api.github.com/orgs/$org/repos?type=all" | jq -r '.[].ssh_url' | while read repo; do
+	# TODO: work with multiple pages if needed
+	curl -s -u "$USER_PAT" "https://api.github.com/orgs/$org/repos?type=all&per_page=100" | jq -r '.[].ssh_url' | while read repo; do
 		repoDirectory=$(basename "$repo")
 		relativeDirectory="$orgDirectory/$repoDirectory"
 
