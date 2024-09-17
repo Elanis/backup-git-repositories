@@ -1,10 +1,12 @@
 #!/bin/bash
 
-echo -e "Loading Config file ..."
 
 # If you need to add a special private key for git:
+# echo -e "Loading ssh keys ..."
 # eval "$(ssh-agent -s)"
-# ssh-add "/path/to/private/key"
+# ssh-add "/path/to/private/key" 2>ssh-add.log
+
+echo -e "Loading Config file ..."
 
 BACKUP_DESTINATION="../"
 USERS_TO_BACKUP=(
@@ -12,5 +14,6 @@ USERS_TO_BACKUP=(
 )
 ORGS_TO_BACKUP=(
 	L-U-M-E-N
+	Dysnomia-Studio
 )
 USER_PAT="USERNAME:PAT" # Get personal access token with read:user and repo
